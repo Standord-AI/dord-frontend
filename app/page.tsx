@@ -7,6 +7,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import { cookies } from "next/headers";
+import DordLogo from "@/components/dord-logo";
 
 export default async function HomePage() {
   const cookieStore = await cookies();
@@ -18,10 +19,7 @@ export default async function HomePage() {
       <header className="border-b border-border">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-              <span className="text-xl font-bold text-white">D</span>
-            </div>
-            <span className="text-xl font-bold text-foreground">DORD</span>
+            <DordLogo width={100} height={32} />
           </div>
           <nav className="hidden md:flex items-center gap-6">
             <Link
