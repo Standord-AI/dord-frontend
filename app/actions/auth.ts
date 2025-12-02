@@ -58,12 +58,29 @@ export async function loginUser(
       });
     }
 
+    // Decode token to get tenant_id
+    let tenantId = "";
+    try {
+      const base64Url = data.token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join("")
+      );
+      const payload = JSON.parse(jsonPayload);
+      tenantId = payload.tenant_id;
+    } catch (e) {
+      console.error("Failed to decode token for tenant_id", e);
+    }
+
     return {
       success: true,
       message: "Login successful",
-      // data.user might not be present in login response based on the snippet,
-      // but we can return data if it exists or just success
-      data: data.user,
+      data: { ...data.user, TenantID: tenantId },
     };
   } catch (error) {
     console.error("Login error:", error);

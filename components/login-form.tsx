@@ -40,7 +40,11 @@ export function LoginForm({
   useEffect(() => {
     if (state.success) {
       toast.success(state.message);
-      router.push(redirectUrl);
+      if (state.data?.TenantID) {
+        router.push(`/admin/dashboard/${state.data.TenantID}`);
+      } else {
+        router.push(redirectUrl);
+      }
     } else if (state.error) {
       toast.error(state.error);
     }
