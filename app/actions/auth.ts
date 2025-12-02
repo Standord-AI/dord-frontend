@@ -228,3 +228,11 @@ export async function signupUser(
     };
   }
 }
+
+export async function logoutUser(): Promise<AuthResponse> {
+  (await cookies()).delete("Authorization");
+  return {
+    success: true,
+    message: "Logged out successfully",
+  };
+}
