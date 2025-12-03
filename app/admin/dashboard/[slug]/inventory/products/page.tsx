@@ -38,7 +38,12 @@ async function getProducts() {
   return res.json();
 }
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   let products: Product[] = [];
   let error = null;
 
@@ -64,7 +69,7 @@ export default async function ProductsPage() {
       <div className="grid gap-4">
         {products && products.length > 0
           ? products.map((product) => (
-              <ProductCard key={product.ID} product={product} />
+              <ProductCard key={product.ID} product={product} slug={slug} />
             ))
           : !error && <p>No products found.</p>}
       </div>

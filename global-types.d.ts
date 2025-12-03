@@ -83,3 +83,18 @@ export interface Category {
   Name: string;
   Description: string;
 }
+
+export interface ProductVariant {
+  ID: number;
+  ProductID: number;
+  VariantName: string;
+  PriceOverride: number;
+  Stock: number;
+  IsActive: boolean;
+}
+
+export interface CreateVariantPayload {
+  VariantName: string;
+  PriceOverride: number;
+  Stock: number;
+}
