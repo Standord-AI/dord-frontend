@@ -15,6 +15,12 @@ interface AbandonedCartsTableProps {
 }
 
 export function AbandonedCartsTable({ carts }: AbandonedCartsTableProps) {
+  if (carts.length === 0) {
+    return (
+      <div className="text-muted-foreground">No abandoned carts found.</div>
+    );
+  }
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -65,13 +71,6 @@ export function AbandonedCartsTable({ carts }: AbandonedCartsTableProps) {
               </TableCell>
             </TableRow>
           ))}
-          {carts.length === 0 && (
-            <TableRow>
-              <TableCell colSpan={5} className="h-24 text-center">
-                No abandoned carts found.
-              </TableCell>
-            </TableRow>
-          )}
         </TableBody>
       </Table>
     </div>

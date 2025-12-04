@@ -16,6 +16,10 @@ interface OrdersTableProps {
 }
 
 export function OrdersTable({ orders }: OrdersTableProps) {
+  if (orders.length === 0) {
+    return <div className="text-muted-foreground">No active orders found.</div>;
+  }
+
   return (
     <div className="rounded-md border">
       <Table>
