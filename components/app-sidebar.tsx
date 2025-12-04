@@ -107,7 +107,7 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Pending Payment",
+          title: "Pending Payments",
           url: "/payments/pending",
         },
         {
