@@ -104,3 +104,26 @@ export interface RequestCategoryPayload {
   Description: string;
   Note: string;
 }
+
+export interface Address {
+  address1: string;
+  address2: string;
+  city: string;
+  zip: string;
+  country: string;
+}
+
+export interface Order {
+  ID: number;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
+  TenantID: string;
+  UserID: number;
+  CartID: number;
+  TotalAmount: number;
+  Status: string;
+  PaymentMethod: string;
+  ShippingAddress: Address;
+  BillingAddress: Address;
+}
