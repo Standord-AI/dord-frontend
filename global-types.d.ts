@@ -127,3 +127,14 @@ export interface Order {
   ShippingAddress: Address;
   BillingAddress: Address;
 }
+
+export interface AbandonedCart {
+  cart_id: number;
+  user_id: number;
+  total_price: number;
+  updated_at: string;
+  user_first_name: string;
+  user_last_name: string;
+  user_email: string;
+  user_phone: string;
+}
