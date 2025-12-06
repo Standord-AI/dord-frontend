@@ -135,8 +135,8 @@ const data = {
           url: "/customers",
         },
         {
-          title: "Segments",
-          url: "/customers/segments",
+          title: "Contact Us Messages",
+          url: "/customers/contact",
         },
       ],
     },
