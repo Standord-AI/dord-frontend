@@ -62,10 +62,20 @@ export interface AuthResponse {
 
 export interface Product {
   ID: number;
+  CreatedAt?: string;
+  UpdatedAt?: string;
+  DeletedAt?: string | null;
+  TenantID?: string;
   Name: string;
   Description: string;
+  Images?: string[] | null;
+  Category?: string;
+  Rating?: number;
+  NumberOfReviews?: number;
   Price: number;
   Stock: number;
+  IsActive?: boolean;
+  IsFeatured?: boolean;
 }
 
 export interface CreateProductPayload {
