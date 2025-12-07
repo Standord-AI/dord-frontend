@@ -86,6 +86,7 @@ export interface CreateProductPayload {
   numberOfReviews: number;
   price: number;
   stock: number;
+  images: string[];
 }
 
 export interface Category {

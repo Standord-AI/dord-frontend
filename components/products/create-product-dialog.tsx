@@ -33,6 +33,7 @@ import { createProduct } from "@/app/actions/products";
 import { getCategories } from "@/app/actions/categories";
 import { toast } from "sonner";
 import { Category } from "@/global-types";
+import { ImageUpload } from "@/components/image-upload";
 
 export function CreateProductDialog() {
   const [open, setOpen] = useState(false);
@@ -44,6 +45,7 @@ export function CreateProductDialog() {
   const [stock, setStock] = useState("");
   const [openCombobox, setOpenCombobox] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [images, setImages] = useState<string[]>([]);
 
   useEffect(() => {
     if (open) {
@@ -71,6 +73,7 @@ export function CreateProductDialog() {
       stock: parseInt(stock),
       rating: 0, // Default
       numberOfReviews: 0, // Default
+      images,
     };
 
     const res = await createProduct(payload);
@@ -84,7 +87,10 @@ export function CreateProductDialog() {
       setDescription("");
       setCategory("");
       setPrice("");
+      setCategory("");
+      setPrice("");
       setStock("");
+      setImages([]);
     } else {
       toast.error(res.error || "Failed to create product");
     }
@@ -206,6 +212,18 @@ export function CreateProductDialog() {
               className="col-span-3"
               required
             />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label className="text-right">Images</Label>
+            <div className="col-span-3">
+              <ImageUpload
+                value={images}
+                onChange={(urls) => setImages(urls)}
+                onRemove={(url) =>
+                  setImages((prev) => prev.filter((item) => item !== url))
+                }
+              />
+            </div>
           </div>
           <DialogFooter>
             <Button type="submit" disabled={loading}>
