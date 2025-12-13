@@ -60,22 +60,43 @@ export interface AuthResponse {
   error?: string;
 }
 
+export interface ProductImage {
+  ID: number;
+  CreatedAt?: string;
+  UpdatedAt?: string;
+  DeletedAt?: string | null;
+  ProductID: number;
+  URL: string;
+  IsMain: boolean;
+  ImageDescription?: string;
+}
+
+export interface ProductCategory {
+  ID: number;
+  CreatedAt?: string;
+  UpdatedAt?: string;
+  DeletedAt?: string | null;
+  TenantID: string;
+  Name: string;
+  Description?: string;
+}
+
 export interface Product {
   ID: number;
   CreatedAt?: string;
   UpdatedAt?: string;
   DeletedAt?: string | null;
-  TenantID?: string;
+  TenantID: string;
   Name: string;
-  Description: string;
-  Images?: string[] | null;
+  Description?: string;
+  Images?: ProductImage[] | null;
   Category?: string;
-  Rating?: number;
-  NumberOfReviews?: number;
+  Rating: number;
+  NumberOfReviews: number;
   Price: number;
   Stock: number;
-  IsActive?: boolean;
-  IsFeatured?: boolean;
+  IsActive: boolean;
+  IsFeatured: boolean;
 }
 
 export interface CreateProductPayload {
@@ -86,7 +107,12 @@ export interface CreateProductPayload {
   numberOfReviews: number;
   price: number;
   stock: number;
-  images: string[];
+
+  images: {
+    URL: string;
+    IsMain: boolean;
+    ImageDescription?: string;
+  }[];
 }
 
 export interface Category {
@@ -95,13 +121,29 @@ export interface Category {
   Description: string;
 }
 
+export interface ProductVariantImage {
+  ID: number;
+  CreatedAt?: string;
+  UpdatedAt?: string;
+  DeletedAt?: string | null;
+  VariantID: number;
+  URL: string;
+  IsMain: boolean;
+  ImageDescription?: string;
+}
+
 export interface ProductVariant {
   ID: number;
+  CreatedAt?: string;
+  UpdatedAt?: string;
+  DeletedAt?: string | null;
   ProductID: number;
+  TenantID: string;
   VariantName: string;
   PriceOverride: number;
   Stock: number;
   IsActive: boolean;
+  Images?: ProductVariantImage[] | null;
 }
 
 export interface CreateVariantPayload {

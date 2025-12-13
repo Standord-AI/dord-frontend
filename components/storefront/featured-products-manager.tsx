@@ -185,7 +185,7 @@ export function FeaturedProductsManager({
                 <div className="aspect-square relative bg-muted rounded-md mb-2 overflow-hidden">
                   {product.Images && product.Images.length > 0 ? (
                     <Image
-                      src={product.Images[0]}
+                      src={product.Images[0].URL}
                       alt={product.Name}
                       fill
                       className="object-cover"

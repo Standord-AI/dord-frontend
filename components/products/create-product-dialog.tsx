@@ -73,7 +73,11 @@ export function CreateProductDialog() {
       stock: parseInt(stock),
       rating: 0, // Default
       numberOfReviews: 0, // Default
-      images,
+      images: images.map((url, index) => ({
+        URL: url,
+        IsMain: index === 0,
+        ImageDescription: "",
+      })),
     };
 
     const res = await createProduct(payload);
