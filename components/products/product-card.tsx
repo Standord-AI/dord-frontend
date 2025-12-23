@@ -1,19 +1,23 @@
-import { Product } from "@/global-types";
+"use client";
 
+import { Product } from "@/global-types";
 import Link from "next/link";
+import { useState } from "react";
+import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
+import { DeleteButton } from "@/components/delete-button";
+import { EditProductDialog } from "@/components/products/edit-product-dialog";
+import { deleteProduct } from "@/app/actions/products";
 
 interface ProductCardProps {
   product: Product;
   slug: string;
 }
 
-import { DeleteButton } from "@/components/delete-button";
-import { EditProductDialog } from "@/components/products/edit-product-dialog";
-import { deleteProduct } from "@/app/actions/products";
-
 export function ProductCard({ product, slug }: ProductCardProps) {
   const mainImage =
     product.Images?.find((img) => img.IsMain) || product.Images?.[0];
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   return (
     <div className="relative group">
@@ -25,12 +29,22 @@ export function ProductCard({ product, slug }: ProductCardProps) {
           {/* Left: Image */}
           <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md bg-gray-100">
             {mainImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={mainImage.URL}
-                alt={product.Name}
-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-              />
+              <>
+                {isImageLoading && (
+                  <Skeleton className="absolute inset-0 z-10" />
+                )}
+                <Image
+                  src={mainImage.URL}
+                  alt={product.Name}
+                  className={`h-full w-full object-cover transition-all duration-300 group-hover:scale-110 ${
+                    isImageLoading ? "opacity-0" : "opacity-100"
+                  }`}
+                  fill
+                  sizes="80px"
+                  quality={60}
+                  onLoad={() => setIsImageLoading(false)}
+                />
+              </>
             ) : (
               <div className="flex h-full w-full items-center justify-center text-gray-400">
                 <span className="text-xs">No Img</span>

@@ -3,6 +3,7 @@ import { decodeJwt } from "@/lib/utils";
 
 import { ProductVariant } from "@/global-types";
 import { CreateVariantDialog } from "@/components/products/create-variant-dialog";
+import { VariantCard } from "@/components/products/variant-card";
 
 async function getVariants(productId: string) {
   const cookieStore = await cookies();
@@ -69,15 +70,7 @@ export default async function ProductVarientsPage({
       <div className="grid gap-4">
         {variants && variants.length > 0
           ? variants.map((variant) => (
-              <div key={variant.ID} className="p-4 border rounded-lg shadow-sm">
-                <h2 className="font-semibold">{variant.VariantName}</h2>
-                <div className="mt-2 flex justify-between items-center">
-                  <span className="font-medium">${variant.PriceOverride}</span>
-                  <span className="text-sm text-gray-500">
-                    Stock: {variant.Stock}
-                  </span>
-                </div>
-              </div>
+              <VariantCard key={variant.ID} variant={variant} productId={id} />
             ))
           : !error && <p>No variants found.</p>}
       </div>

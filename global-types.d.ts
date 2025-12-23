@@ -175,6 +175,12 @@ export interface CreateVariantPayload {
   Stock: number;
 }
 
+export interface UpdateVariantPayload {
+  variantName?: string;
+  price?: number;
+  stock?: number;
+}
+
 export interface RequestCategoryPayload {
   Name: string;
   Description: string;
