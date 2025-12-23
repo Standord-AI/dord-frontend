@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Loader2, Trash, Upload, Star } from "lucide-react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
-import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
