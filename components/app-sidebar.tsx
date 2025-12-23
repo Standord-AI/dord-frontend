@@ -67,12 +67,12 @@ const data = {
           url: "/inventory/products",
         },
         {
-          title: "Suppliers",
-          url: "/inventory/suppliers",
-        },
-        {
           title: "Categories",
           url: "/inventory/categories",
+        },
+        {
+          title: "Brands",
+          url: "/inventory/brands",
         },
       ],
     },
