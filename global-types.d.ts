@@ -279,3 +279,35 @@ export interface BankAccount {
   AccountNumber: string;
   IsDefault: boolean;
 }
+
+export interface Customer {
+  id: number;
+  tenant_id: string;
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  first_purchase_date: string;
+  last_purchase_date: string;
+  total_orders: number;
+  total_spent: number;
+  average_order_value: number;
+  status: string;
+}
+
+export interface CustomerStats {
+  total_customers: number;
+  active_customers: number;
+  total_revenue: number;
+  average_order_value: number;
+}
+
+export interface GetCustomersResponse {
+  message: string;
+  customers: Customer[];
+  total: number;
+  page: number;
+  limit: number;
+  total_pages: number;
+}
