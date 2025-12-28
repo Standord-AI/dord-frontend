@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Product } from "@/global-types";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Product, Tenant } from "@/global-types";
 import { FeaturedProductsManager } from "@/components/storefront/featured-products-manager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,15 +16,17 @@ import {
 import { Check, Save } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { updateTenant, uploadTenantImage } from "@/app/actions/tenant";
 
 interface CatalogueDesignClientProps {
   initialFeaturedProducts: Product[];
   slug: string;
+  tenant: Tenant;
 }
 
 const DESIGNS = [
   {
-    id: "summer-collection",
+    id: "variant-one",
     name: "Summer Collection",
     description:
       "A vibrant, full-screen hero design perfect for seasonal promotions.",
@@ -31,7 +34,7 @@ const DESIGNS = [
     imageType: "background", // or "product"
   },
   {
-    id: "pure-flave",
+    id: "variant-two",
     name: "Pure Flave",
     description:
       "A clean, split-layout design focusing on product details and minimalism.",
@@ -39,14 +42,14 @@ const DESIGNS = [
     imageType: "product",
   },
   {
-    id: "modern-chic",
+    id: "variant-three",
     name: "Modern Chic",
     description: "Elegant and sophisticated design for high-end brands.",
     image: "/ui-designs/hero-ui-3.png",
     imageType: "background",
   },
   {
-    id: "urban-style",
+    id: "variant-four",
     name: "Urban Style",
     description: "Bold and edgy design for streetwear and lifestyle brands.",
     image: "/ui-designs/hero-ui-4.png",
@@ -57,38 +60,88 @@ const DESIGNS = [
 export function CatalogueDesignClient({
   initialFeaturedProducts,
   slug,
+  tenant,
 }: CatalogueDesignClientProps) {
-  const [selectedDesign, setSelectedDesign] = useState("summer-collection");
-  const [savedDesign, setSavedDesign] = useState("summer-collection");
-  const [bannerImage, setBannerImage] = useState<string | null>(null);
-  const [savedBannerImage, setSavedBannerImage] = useState<string | null>(null);
+  const router = useRouter();
+
+  // Initialize state from tenant props
+  const [selectedDesign, setSelectedDesign] = useState(
+    tenant.LandingPageDesign || "variant-one"
+  );
+  const [savedDesign, setSavedDesign] = useState(
+    tenant.LandingPageDesign || "variant-one"
+  );
+  const [bannerImage, setBannerImage] = useState<string | null>(
+    tenant.BannerURL || null
+  );
+  const [savedBannerImage, setSavedBannerImage] = useState<string | null>(
+    tenant.BannerURL || null
+  );
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  // Sync state with tenant prop updates
+  useEffect(() => {
+    setSelectedDesign(tenant.LandingPageDesign || "variant-one");
+    setSavedDesign(tenant.LandingPageDesign || "variant-one");
+    setBannerImage(tenant.BannerURL || null);
+    setSavedBannerImage(tenant.BannerURL || null);
+  }, [tenant]);
 
   const handleSave = async () => {
     setIsSaving(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setSavedDesign(selectedDesign);
-    setSavedBannerImage(bannerImage);
-    toast.success("Design saved successfully");
-    setIsSaving(false);
+    try {
+      const payload = {
+        LandingPageDesign: selectedDesign,
+        BannerURL: bannerImage || undefined,
+      };
+
+      const res = await updateTenant(payload);
+
+      if (res.success) {
+        setSavedDesign(selectedDesign);
+        setSavedBannerImage(bannerImage);
+        toast.success("Design saved successfully");
+        router.refresh(); // Refresh server components to fetch new data
+      } else {
+        toast.error(res.error || "Failed to save design");
+      }
+    } catch (error) {
+      toast.error("An error occurred while saving");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setBannerImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("File size must be less than 2MB");
+        return;
+      }
+
+      setIsUploading(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await uploadTenantImage(formData);
+
+      if (res.success && res.url) {
+        setBannerImage(res.url);
+        toast.success("Image uploaded successfully. Don't forget to save!");
+      } else {
+        toast.error(res.error || "Failed to upload image");
+      }
+      setIsUploading(false);
     }
   };
 
   const hasChanges =
     selectedDesign !== savedDesign || bannerImage !== savedBannerImage;
 
-  const currentDesign = DESIGNS.find((d) => d.id === selectedDesign);
+  const currentDesign =
+    DESIGNS.find((d) => d.id === selectedDesign) || DESIGNS[0];
 
   return (
     <div className="p-6 space-y-8">
@@ -152,7 +205,13 @@ export function CatalogueDesignClient({
         </h2>
         <Card>
           <CardContent className="p-6">
-            <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 space-y-4 hover:bg-accent/50 transition-colors">
+            <div
+              className={`flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 space-y-4 transition-colors ${
+                isUploading
+                  ? "opacity-50 pointer-events-none"
+                  : "hover:bg-accent/50"
+              }`}
+            >
               {bannerImage ? (
                 <div className="relative w-full max-w-md aspect-video rounded-lg overflow-hidden shadow-md">
                   <Image
@@ -173,17 +232,7 @@ export function CatalogueDesignClient({
               ) : (
                 <>
                   <div className="bg-primary/10 p-4 rounded-full">
-                    <Image
-                      src="/placeholder.svg" // We might not have this, so maybe use an icon
-                      width={40}
-                      height={40}
-                      alt="Upload"
-                      className="opacity-50"
-                      onError={(e) => {
-                        // Fallback if image fails, though we are using lucide icon below actually
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
+                    {/* Placeholder Logic */}
                     <Save className="h-8 w-8 text-primary" />
                   </div>
                   <div className="text-center space-y-1">
@@ -203,10 +252,11 @@ export function CatalogueDesignClient({
                     className="hidden"
                     id="banner-upload"
                     onChange={handleImageUpload}
+                    disabled={isUploading}
                   />
-                  <Button asChild variant="outline">
+                  <Button asChild variant="outline" disabled={isUploading}>
                     <label htmlFor="banner-upload" className="cursor-pointer">
-                      Select File
+                      {isUploading ? "Uploading..." : "Select File"}
                     </label>
                   </Button>
                 </>

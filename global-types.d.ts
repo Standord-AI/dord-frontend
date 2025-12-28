@@ -26,6 +26,10 @@ export interface User {
 }
 
 export interface Tenant {
+  ID: number;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
   TenantID: string;
   Name: string;
   Slug: string;
@@ -39,6 +43,29 @@ export interface Tenant {
   BannerURL: string | null;
   PrimaryColor: string | null;
   SecondaryColor: string | null;
+  AccentColor: string | null;
+  BusinessAddress: Address;
+  LandingPageDesign: string;
+  SecondaryBannerURL: string | null;
+  LandingPageTitle: string | null;
+  LandingPageDescription: string | null;
+}
+
+export interface UpdateTenantPayload {
+  Name?: string;
+  Description?: string;
+  BusinessEmail?: string;
+  BusinessPhone?: string;
+  LogoURL?: string;
+  BannerURL?: string;
+  PrimaryColor?: string;
+  SecondaryColor?: string;
+  AccentColor?: string;
+  BusinessAddress?: Address;
+  LandingPageDesign?: string;
+  SecondaryBannerURL?: string;
+  LandingPageTitle?: string;
+  LandingPageDescription?: string;
 }
 
 export interface MerchantSignupPayload {
