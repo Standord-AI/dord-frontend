@@ -164,17 +164,17 @@ const data = {
   projects: [
     {
       name: "Agent Settings",
-      url: "#",
+      url: "agent/settings",
       icon: Frame,
     },
     {
       name: "AI Sales Insights",
-      url: "#",
+      url: "ai-sales-insights",
       icon: PieChart,
     },
     {
       name: "Test Automations",
-      url: "#",
+      url: "test-automations",
       icon: Map,
     },
   ],

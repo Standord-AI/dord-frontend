@@ -29,8 +29,31 @@ export default async function StoreSettingsPage() {
     return <div className="p-6">Error loading store settings.</div>;
   }
 
-  // Cast the data to TenantSettings since getTenant returns 'any' or a different shape
-  const settings: TenantSettings = tenantData as TenantSettings;
+  // Map the data to TenantSettings manually since keys differ (CamelCase vs snake_case)
+  const settings: TenantSettings = {
+    tenant_id: tenantData.TenantID,
+    name: tenantData.Name,
+    slug: tenantData.Slug,
+    owner_id: tenantData.OwnerID,
+    business_email: tenantData.BusinessEmail,
+    business_phone: tenantData.BusinessPhone,
+    description: tenantData.Description,
+    plan_type: tenantData.PlanType,
+    logo_url: tenantData.LogoURL || "",
+    banner_url: tenantData.BannerURL || "",
+    primary_color: tenantData.PrimaryColor || "",
+    secondary_color: tenantData.SecondaryColor || "",
+    accent_color: tenantData.AccentColor || "",
+    business_address: {
+      address1: tenantData.BusinessAddress?.address1 || "",
+      address2: tenantData.BusinessAddress?.address2 || "",
+      city: tenantData.BusinessAddress?.city || "",
+      state: "", // Address interface doesn't have state, default to empty
+      zip: tenantData.BusinessAddress?.zip || "",
+      country: tenantData.BusinessAddress?.country || "",
+    },
+    is_active: tenantData.IsActive,
+  };
   const bankAccounts = bankAccountsData.bank_accounts || [];
 
   return (

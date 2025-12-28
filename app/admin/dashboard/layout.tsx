@@ -52,10 +52,10 @@ export default async function DashboardLayout({
         const tenantData = await getTenant(payload.tenant_id);
         if (tenantData) {
           tenant = {
-            name: tenantData.name,
-            plan: tenantData.plan_type,
-            logo: tenantData.logo_url,
-            slug: tenantData.slug,
+            name: tenantData.Name,
+            plan: tenantData.PlanType,
+            logo: tenantData.LogoURL,
+            slug: tenantData.Slug,
           };
         }
       }
