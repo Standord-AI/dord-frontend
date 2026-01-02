@@ -338,3 +338,53 @@ export interface GetCustomersResponse {
   limit: number;
   total_pages: number;
 }
+
+// Agent Configuration Types
+export interface Agent {
+  ID: number;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
+  TenantID: string;
+  N8NWebhookURL: string;
+  N8NInstanceID: string;
+  AutomationStatus: string;
+  DordEnabled: boolean;
+  AgentName: string;
+  AgentPersona: string;
+  AgentDescription: string | null;
+  LLMModel: string;
+  TokenUsageLimit: number;
+  TokenUsageCurrent: number;
+  LastAutomationTrigger: string;
+}
+
+export type AgentType = "sales" | "support" | "general";
+export type ToneType = "friendly" | "professional" | "casual";
+export type EmojiUsage = "none" | "low" | "medium";
+export type LanguageCode = "en" | "si" | "ta";
+export type DiscountPolicy = "never" | "allowed" | "approval";
+
+export interface AgentConfigInput {
+  agentName: string;
+  agentType: AgentType;
+  tone: ToneType;
+  verbosity: 1 | 2 | 3 | 4 | 5;
+  emojiUsage: EmojiUsage;
+  language: LanguageCode;
+  businessDescription: string;
+  allowedActions: string[];
+  discountPolicy: DiscountPolicy;
+  maxDiscountPercent?: number;
+  greetingMessage: string;
+  escalationMessage: string;
+  customInstructions?: string;
+}
+
+export interface UpdateAgentPayload {
+  AgentName?: string;
+  AgentPersona?: string;
+  AgentDescription?: string;
+  DordEnabled?: boolean;
+  LLMModel?: string;
+}
