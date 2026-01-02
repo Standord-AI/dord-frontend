@@ -67,12 +67,12 @@ const data = {
           url: "/inventory/products",
         },
         {
-          title: "Suppliers",
-          url: "/inventory/suppliers",
-        },
-        {
           title: "Categories",
           url: "/inventory/categories",
+        },
+        {
+          title: "Brands",
+          url: "/inventory/brands",
         },
       ],
     },
@@ -107,16 +107,20 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Pending Payment",
+          title: "Pending Payments",
           url: "/payments/pending",
         },
         {
-          title: "Verified Payments",
+          title: "Reviewed Payments",
           url: "/payments/verified",
         },
         {
-          title: "Refunds/Chargebacks",
+          title: "Refunds & Chargebacks",
           url: "/payments/refunds",
+        },
+        {
+          title: "Payments History",
+          url: "/payments/history",
         },
       ],
     },
@@ -131,8 +135,8 @@ const data = {
           url: "/customers",
         },
         {
-          title: "Segments",
-          url: "/customers/segments",
+          title: "Contact Us Messages",
+          url: "/customers/contact",
         },
       ],
     },
@@ -160,17 +164,17 @@ const data = {
   projects: [
     {
       name: "Agent Settings",
-      url: "#",
+      url: "agent/settings",
       icon: Frame,
     },
     {
       name: "AI Sales Insights",
-      url: "#",
+      url: "ai-sales-insights",
       icon: PieChart,
     },
     {
       name: "Test Automations",
-      url: "#",
+      url: "test-automations",
       icon: Map,
     },
   ],
